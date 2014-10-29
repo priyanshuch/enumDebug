@@ -1,24 +1,22 @@
 package com.stack
 
-import com.stack.User.UserStatus
-
 class UserController {
 
-
     def changeStatus(String status) {
+        println status
+        UserStatus futureStatus = UserStatus.find { it.name() == status}
+        println "futureStatus>>>" + futureStatus
 
-        String invalidStatus = "registered"
-        String validStatus = "nonregistered"
+        if (!futureStatus)
+            respond ([success: false, message: "Failed to update status"])
+        else 
+            respond ([success: true, message: "Successfully updated status"])
 
-//        UserStatus futureStatus = UserStatus.find { it.name() == status }
-
-        UserStatus failedStatus = UserStatus.find { it.name() == invalidStatus}
-        UserStatus successStatus = UserStatus.find { it.name() == validStatus}
-    
-        println "failed enum"
-        println failedStatus
-        println "success enum"
-        println succesStatus​
+        redirect(uri: "/")
     }
 
+    enum UserStatus {
+        REGISTERED,
+        NONREGISTERD
+    }
 }
